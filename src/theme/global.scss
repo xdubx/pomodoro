@@ -1,0 +1,24 @@
+.flex-center {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.flex-colum {
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-padding {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.transparent-button {
+  background: transparent;
+  border: solid 1px;
+  border-radius: 20px;
+  padding: 10px 20px 10px 20px;
+  &:hover {
+    background: red;
+  }
+}
