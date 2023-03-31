@@ -23,8 +23,8 @@
       <div class="settings__input">
         <label for="themeColor">Theme Base color</label>
         <select name="themeColor" v-model="themeColor" id="themeColor">
-          <option value="mystery-alert">White</option>
-          <option value="retro">Dark</option>
+          <option value="white">White</option>
+          <option value="dark">Dark</option>
         </select>
       </div>
       <div class="settings__input">

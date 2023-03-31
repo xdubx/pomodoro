@@ -26,6 +26,7 @@ export default defineComponent({
   props: {
     id: Number,
     name: String,
+    round: Number,
   },
   data() {
     return {

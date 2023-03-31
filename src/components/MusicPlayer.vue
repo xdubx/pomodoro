@@ -1,7 +1,8 @@
 <template>
-  <input v-model="mediaUrl" placeholder="Streaming URL" />
+  <input v-model="mediaUrl" placeholder="Streaming URL" class="" />
 
   <iframe
+    v-if="mediaUrl.length"
     id="player"
     class="extendedMedia"
     :src="mediaUrlIframe"
@@ -16,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// TODO: keyboard controlls
+// TODO: keyboard controls
 export default defineComponent({
   name: "MusicPlayer",
 
@@ -61,6 +62,7 @@ export default defineComponent({
         if (!val.includes("list")) {
           const id = this.getId(val);
           this.mediaUrlIframe = `http://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`; // &origin=http://localhost:8080
+          // TODO: autoplay
           return;
         } else {
           // playlist
@@ -134,7 +136,11 @@ export default defineComponent({
 
 <style scoped>
 .extendedMedia {
-  height: 300px;
-  width: 420px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  height: 95%;
+  width: 100%;
 }
 </style>

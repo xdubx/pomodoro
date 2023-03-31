@@ -1,6 +1,6 @@
 <template>
   <div class="timer">
-    <div class="timer__title">Round: {{ currentRound }}</div>
+    <div class="timer__title transparent-button">Round: {{ currentRound }}</div>
     <div class="timer__img">
       <PomodoroTimeDrawer
         :paused="pause"
@@ -34,16 +34,16 @@
       >
         Reset
       </button>
+      <MusicPlayer :stopCondition="pause" />
     </div>
     <Settings />
   </div>
-  <!-- <MusicPlayer :stopCondition="pause" /> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import PomodoroTimeDrawer from "./PomodoroTimeDrawer.vue";
-// import MusicPlayer from "./MusicPlayer.vue";
+import MusicPlayer from "../MusicPlayer.vue";
 import Settings from "./Settings-Pomodoro.vue";
 import { PomodoroState } from "../../types/pomodoro-state.enum";
 
@@ -52,10 +52,9 @@ import { PomodoroState } from "../../types/pomodoro-state.enum";
 const click = require(`@/assets/double-click.wav`);
 
 export default defineComponent({
-  components: { PomodoroTimeDrawer, Settings },
+  components: { PomodoroTimeDrawer, Settings, MusicPlayer },
   name: "PomodoroCycle",
   inheritAttrs: false,
-  props: {},
 
   data() {
     return {
@@ -207,8 +206,6 @@ export default defineComponent({
         s = Math.floor(time % 60)
           .toString()
           .padStart(2, "0");
-
-      // TODO: style string
 
       return m + ":" + s;
     },

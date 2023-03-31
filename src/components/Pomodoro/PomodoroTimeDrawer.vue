@@ -21,6 +21,8 @@ export default defineComponent({
       image: "",
     };
   },
+
+  // TODO: update this calc
   mounted() {
     this.image = this.createTray(this.paused, this.total!, this.elapsed!);
   },

@@ -4,6 +4,10 @@
     <p></p>
 
     <h1>Why use 🍅?</h1>
+    <p></p>
+
+    <h1>How use 🍅?</h1>
+    <p></p>
   </div>
 </template>
 

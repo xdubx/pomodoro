@@ -1,9 +1,10 @@
 <template>
   <div class="flex-center flex-colum page-padding">
-    <div v-for="item in items" :key="item.id">
+    <div v-for="item in items" :key="item.id" class="work">
       <TaskComponent
         :name="item.name"
         :id="item.id"
+        class="work__task"
         @deleteItem="deleteTask"
         @checkItem="checkTask"
       ></TaskComponent>
@@ -24,7 +25,7 @@
     </div>
     <button @click="openTaskWizard()" class="add-btn">Add Task</button>
 
-    <div v-for="item in finished" :key="item.id">
+    <div v-for="item in finished" :key="item.id" class="finished">
       <TaskComponent
         :name="item.name"
         :id="item.id"
@@ -67,11 +68,14 @@ export default defineComponent({
         this.taskInput = "";
       }
     },
+    // item stuff
     addItem(name: string) {
       this.items.push({ id: Date.now(), name, rounds: 0 });
+      this.saveTasks();
     },
     deleteTask(id: number) {
       this.items = this.items.filter((item) => item.id != id);
+      this.saveTasks();
     },
     checkTask(id: number) {
       const item = this.items.find((item) => item.id === id);
@@ -79,9 +83,19 @@ export default defineComponent({
         this.finished.push(item);
       }
       this.deleteTask(id);
+      this.saveTasks();
     },
+
+    // save / load
     saveTasks() {
       localStorage.setItem("tasks", JSON.stringify(this.items));
+    },
+
+    loadTasks() {
+      const storage = localStorage.getItem("tasks");
+      if (storage) {
+        this.items = JSON.parse(storage);
+      }
     },
   },
   components: { TaskComponent, IonIcon },
@@ -105,6 +119,14 @@ export default defineComponent({
       cursor: pointer;
     }
   }
+}
+.work {
+  &__task {
+    margin-bottom: 8px;
+  }
+}
+.finished {
+  margin-top: 32px;
 }
 
 .add-btn {
