@@ -64,7 +64,8 @@ export default defineComponent({
         } else {
           // playlist
           const list = this.getVideoSeries(val);
-          this.mediaUrlIframe = `https://www.youtube.com/embed/videoseries?list=${list}?autoplay=1&enablejsapi=1`;
+          // 
+          this.mediaUrlIframe = `https://www.youtube.com/embed/?listType=playlist&list=${list}&autoplay=1&enablejsapi=1`;
           return;
         }
       }
