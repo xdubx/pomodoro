@@ -59,15 +59,12 @@ export default defineComponent({
         this.currentPlayer = PlayerType.YOUTUBE;
         if (!val.includes("list")) {
           const id = this.getId(val);
-          // this.mediaUrlIframe =
-          //   "https://www.youtube.com/embed/RGPw07ZoM6A?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0";
           this.mediaUrlIframe = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0`; // &origin=http://localhost:8080
-          // TODO: autoplay
           return;
         } else {
           // playlist
           const list = this.getVideoSeries(val);
-          this.mediaUrlIframe = `http://www.youtube.com/embed/videoseries?list=${list}?autoplay=1&enablejsapi=1`;
+          this.mediaUrlIframe = `https://www.youtube.com/embed/videoseries?list=${list}?autoplay=1&enablejsapi=1`;
           return;
         }
       }
