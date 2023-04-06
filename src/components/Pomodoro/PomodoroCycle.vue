@@ -16,24 +16,27 @@
     </div>
 
     <div class="container">
-      <button
-        class="container__btn transparent-button"
-        v-on:click="togglePomodoro()"
-      >
-        {{ pomodoroButton }}
-      </button>
-      <button
-        class="container__btn transparent-button"
-        v-on:click="skipState()"
-      >
-        Skip
-      </button>
-      <button
-        class="container__btn transparent-button"
-        v-on:click="resetRound()"
-      >
-        Reset
-      </button>
+      <div class="container__buttons">
+        <button
+          class="container__btn transparent-button"
+          v-on:click="togglePomodoro()"
+        >
+          {{ pomodoroButton }}
+        </button>
+        <button
+          class="container__btn transparent-button"
+          v-on:click="skipState()"
+        >
+          Skip
+        </button>
+        <button
+          class="container__btn transparent-button"
+          v-on:click="resetRound()"
+        >
+          Reset
+        </button>
+      </div>
+
       <MusicPlayer :stopCondition="pause" />
     </div>
     <Settings />
@@ -284,6 +287,7 @@ export default defineComponent({
 }
 .container {
   display: flex;
+  flex-direction: column;
   margin-top: 25px;
   &__btn {
     margin: 16px;

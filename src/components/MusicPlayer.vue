@@ -1,21 +1,27 @@
 <template>
-  <input v-model="mediaUrl" placeholder="Streaming URL" class="" />
+  <input
+    v-model="mediaUrl"
+    placeholder="Streaming URL"
+    class="transparent-button"
+  />
 
   <iframe
     v-if="mediaUrl.length"
-    id="player"
+    ref="player"
     class="extendedMedia"
     :src="mediaUrlIframe"
     title="Music player"
     frameborder="0"
     sandbox="allow-scripts allow-same-origin allow-presentation"
     allowfullscreen
+    allow="autoplay"
   >
   </iframe>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { PlayerType } from "../types/player-type.enum";
 
 // TODO: keyboard controls
 export default defineComponent({
@@ -27,27 +33,18 @@ export default defineComponent({
     return {
       mediaUrl: "",
       mediaUrlIframe: "",
-      player: undefined as any,
+      currentPlayer: PlayerType.NONE,
     };
-  },
-  mounted() {
-    this.player = document.getElementById("player");
   },
 
   watch: {
     stopCondition(val) {
-      if (this.player && this.player.contentWindow) {
+      const player = this.$refs.player as HTMLIFrameElement;
+      if (player && player.contentWindow) {
         if (val) {
-          this.player.contentWindow.postMessage(
-            JSON.stringify({ event: "command", func: "pauseVideo" }),
-            "*"
-          );
+          this.stopMusic();
         } else {
-          console.log("play");
-          this.player.contentWindow.postMessage(
-            JSON.stringify({ event: "command", func: "playVideo" }),
-            "*"
-          );
+          this.startMusic();
         }
       }
     },
@@ -59,9 +56,12 @@ export default defineComponent({
 
       // single video
       if (this.youtube_validate(val)) {
+        this.currentPlayer = PlayerType.YOUTUBE;
         if (!val.includes("list")) {
           const id = this.getId(val);
-          this.mediaUrlIframe = `http://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`; // &origin=http://localhost:8080
+          // this.mediaUrlIframe =
+          //   "https://www.youtube.com/embed/RGPw07ZoM6A?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0";
+          this.mediaUrlIframe = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0`; // &origin=http://localhost:8080
           // TODO: autoplay
           return;
         } else {
@@ -93,6 +93,7 @@ export default defineComponent({
     },
   },
   methods: {
+    // TODO: move this to utilities
     youtube_validate(url: string) {
       var regExp = /^(?:https?:\/\/)?(?:www\.)?youtube\.com(?:\S+)?$/;
       const urlArray = url.match(regExp);
@@ -130,17 +131,44 @@ export default defineComponent({
         console.log("playlist id: " + match[3]);
       }
     },
+    startMusic() {
+      if (this.currentPlayer === PlayerType.YOUTUBE) {
+        const player = this.$refs.player as HTMLIFrameElement;
+        if (player && player.contentWindow !== null) {
+          console.log("play");
+          player.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "playVideo" }),
+            "*"
+          );
+        }
+      }
+    },
+    stopMusic() {
+      if (this.currentPlayer === PlayerType.YOUTUBE) {
+        const player = this.$refs.player as HTMLIFrameElement;
+        if (player && player.contentWindow !== null) {
+          player.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "pauseVideo" }),
+            "*"
+          );
+        }
+      }
+    },
   },
 });
 </script>
 
 <style scoped>
+@import "../theme/global.scss";
 .extendedMedia {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  height: 95%;
+  height: 100%;
   width: 100%;
+}
+.inputUrl {
+  border-radius: 20px;
 }
 </style>
