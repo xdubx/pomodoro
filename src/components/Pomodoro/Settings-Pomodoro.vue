@@ -40,6 +40,15 @@
           value="1"
         />
       </div>
+      <div class="settings__input">
+        <label for="color">Stop Music on Pause</label>
+        <input
+          type="checkbox"
+          name="pauseMusic"
+          v-model="pauseMusic"
+          value="1"
+        />
+      </div>
     </div>
     <button @click="save()" class="settings__btn transparent-button">
       Save
@@ -68,11 +77,13 @@ export default defineComponent({
       bonus: false,
       autoStart: false,
       open: false,
+      pauseMusic: false,
     };
   },
 
   computed: {},
   watch: {},
+  emits: ["settingsUpdated"],
   methods: {
     save() {
       localStorage.setItem("sound", this.endSound.toString());
@@ -80,6 +91,7 @@ export default defineComponent({
       localStorage.setItem("themeColor", this.themeColor.toString());
       localStorage.setItem("bonus", this.bonus.toString());
       localStorage.setItem("autoStart", this.autoStart.toString());
+      localStorage.setItem("pauseMusic", this.pauseMusic.toString());
       // load sound
       this.open = false;
     },
@@ -94,12 +106,23 @@ export default defineComponent({
       const themeColor = localStorage.getItem("themeColor");
       const bonus = localStorage.getItem("bonus");
       const autoStart = localStorage.getItem("autoStart");
+      const pauseMusic = localStorage.getItem("pauseMusic");
       if (sound && color && bonus && autoStart && themeColor) {
         this.endSound = sound;
         this.color = color;
         this.themeColor = themeColor;
         this.bonus = bonus === "true";
         this.autoStart = autoStart === "true";
+        this.pauseMusic = pauseMusic === "true";
+      } else {
+        // preselect values
+        this.endSound = "mystery-alert";
+        this.color = "#FF0000";
+        this.themeColor = "dark";
+        this.bonus = true;
+        this.autoStart = true;
+        this.pauseMusic = false;
+        this.save();
       }
     },
 

@@ -39,6 +39,9 @@ export default defineComponent({
 
   watch: {
     stopCondition(val) {
+      if (localStorage.getItem("pauseMusic") === "false") {
+        return;
+      }
       const player = this.$refs.player as HTMLIFrameElement;
       if (player && player.contentWindow) {
         if (val) {
@@ -59,12 +62,12 @@ export default defineComponent({
         this.currentPlayer = PlayerType.YOUTUBE;
         if (!val.includes("list")) {
           const id = this.getId(val);
-          this.mediaUrlIframe = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0`; // &origin=http://localhost:8080
+          this.mediaUrlIframe = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&controls=0&rel=0`;
           return;
         } else {
           // playlist
           const list = this.getVideoSeries(val);
-          // 
+          //
           this.mediaUrlIframe = `https://www.youtube.com/embed/?listType=playlist&list=${list}&autoplay=1&enablejsapi=1`;
           return;
         }
@@ -92,6 +95,7 @@ export default defineComponent({
   },
   methods: {
     // TODO: move this to utilities
+    // TODO: shared links don't work
     youtube_validate(url: string) {
       var regExp = /^(?:https?:\/\/)?(?:www\.)?youtube\.com(?:\S+)?$/;
       const urlArray = url.match(regExp);

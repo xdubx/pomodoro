@@ -29,7 +29,7 @@
       <TaskComponent
         :name="item.name"
         :id="item.id"
-        @deleteItem="deleteTask"
+        @deleteItem="deleteFinishedTask"
         @checkItem="checkTask"
       ></TaskComponent>
     </div>
@@ -85,7 +85,9 @@ export default defineComponent({
       this.deleteTask(id);
       this.saveTasks();
     },
-
+    deleteFinishedTask(id: number) {
+      this.finished = this.finished.filter((item) => item.id != id);
+    },
     // save / load
     saveTasks() {
       localStorage.setItem("tasks", JSON.stringify(this.items));

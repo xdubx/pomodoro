@@ -124,7 +124,7 @@ export default defineComponent({
       if (this.running) {
         this.stopTimer();
       } else {
-        this.startTimer();
+        this.startTimer(true);
       }
       this.toggleButton();
     },
@@ -136,7 +136,7 @@ export default defineComponent({
       }
     },
 
-    startTimer() {
+    startTimer(playClick: boolean) {
       if (this.running) {
         return;
       }
@@ -151,10 +151,15 @@ export default defineComponent({
           this.running = false;
           this.doPomodore();
           this.toggleButton();
+          if (localStorage.getItem("autoStart")) {
+            this.startTimer(false);
+          }
         }
       }, 1000);
       this.running = true;
-      this.playAudio("double-click");
+      if (playClick) {
+        this.playAudio("double-click");
+      }
     },
 
     stopTimer() {
@@ -232,7 +237,6 @@ export default defineComponent({
         // eslint-disable-next-line
         const audio = new Audio(require(`@/assets/${file}.wav`)); // TODO: get this from settings file
         audio.play();
-        audio;
       } catch (e) {
         console.log(e);
       }
