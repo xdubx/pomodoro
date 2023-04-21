@@ -69,9 +69,9 @@ export default defineComponent({
       time: 0,
       total: 0,
       elapsed: 0,
-      shortBreak: 5 * 60,
+      shortBreak: 10,
       longBreak: 15 * 60,
-      work: 25 * 60,
+      work: 10,
       running: false,
     };
   },
@@ -97,7 +97,6 @@ export default defineComponent({
   },
   watch: {
     currentState(val) {
-      this.running = false;
       this.elapsed = 0;
       switch (val) {
         case PomodoroState.WORK:
@@ -121,6 +120,7 @@ export default defineComponent({
   },
   methods: {
     togglePomodoro() {
+      console.log("toggle " + this.running);
       if (this.running) {
         this.stopTimer();
       } else {
@@ -150,9 +150,11 @@ export default defineComponent({
           clearInterval(this.timer);
           this.running = false;
           this.doPomodore();
-          this.toggleButton();
           if (localStorage.getItem("autoStart")) {
+            clearInterval(this.timer);
             this.startTimer(false);
+          } else {
+            this.toggleButton();
           }
         }
       }, 1000);
