@@ -69,9 +69,9 @@ export default defineComponent({
       time: 0,
       total: 0,
       elapsed: 0,
-      shortBreak: 10,
+      shortBreak: 5 * 60,
       longBreak: 15 * 60,
-      work: 10,
+      work: 25 * 60,
       running: false,
     };
   },
