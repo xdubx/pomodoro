@@ -67,7 +67,6 @@ export default defineComponent({
         } else {
           // playlist
           const list = this.getVideoSeries(val);
-          //
           this.mediaUrlIframe = `https://www.youtube.com/embed/?listType=playlist&list=${list}&autoplay=1&enablejsapi=1`;
           return;
         }
@@ -97,7 +96,9 @@ export default defineComponent({
     // TODO: move this to utilities
     // TODO: shared links don't work
     youtube_validate(url: string) {
-      var regExp = /^(?:https?:\/\/)?(?:www\.)?youtube\.com(?:\S+)?$/;
+      var regExp =
+        /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)?$/;
+      // add short url
       const urlArray = url.match(regExp);
       return urlArray && urlArray.length > 0;
     },
