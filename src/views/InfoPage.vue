@@ -2,17 +2,17 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tasks</ion-title>
+        <ion-title>Information</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Tasks</ion-title>
+          <ion-title size="large">Information</ion-title>
         </ion-toolbar>
       </ion-header>
 
-      <TasksOverview />
+      <ExploreContainer name="Tab 3 page" />
     </ion-content>
   </ion-page>
 </template>
@@ -26,17 +26,17 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/vue";
-import TasksOverview from "../components/Tasks/TasksOverview.vue";
+import ExploreContainer from "@/components/ExploreContainer.vue";
 
 export default defineComponent({
-  name: "Tab2Page",
+  name: "InfoPage",
   components: {
+    ExploreContainer,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     IonPage,
-    TasksOverview,
   },
 });
 </script>
