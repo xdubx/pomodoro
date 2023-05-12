@@ -141,11 +141,11 @@ export default defineComponent({
 .modal {
   position: fixed;
   z-index: 999;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 5%;
+  right: 0%;
   padding: 20px;
-  background-color: black;
+  background-color: #0d0f10;
+  border-radius: 20px;
 
   h1 {
     margin: 10px 0;

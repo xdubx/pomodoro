@@ -1,9 +1,10 @@
 <template>
   <div v-if="name">
     <div class="task">
-      {{ name }}
-      <div>
+      {{ name }} {{ round }}
+      <div class="task__icon flex-center">
         <ion-icon
+          v-if="showCheck !== false || showCheck === undefined"
           :icon="shieldCheckmarkOutline"
           class="task__icon--check"
           @click="$emit('checkItem', id)"
@@ -27,6 +28,7 @@ export default defineComponent({
     id: Number,
     name: String,
     round: Number,
+    showCheck: Boolean,
   },
   data() {
     return {
@@ -44,12 +46,15 @@ export default defineComponent({
 
 .task {
   padding: 15px;
-  min-width: 200px;
+  min-width: 350px; // TODO: update for small devices
   display: flex;
   justify-content: space-between;
   border: solid 1px;
   border-radius: 25px;
+  word-break: break-all;
   &__icon {
+    width: 45px;
+    margin-left: 5px;
     &--check {
       color: var(--ion-color-success);
       &:hover {
@@ -65,6 +70,4 @@ export default defineComponent({
     }
   }
 }
-
-// css stuff
 </style>
