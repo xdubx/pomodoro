@@ -48,7 +48,8 @@ import { defineComponent } from "vue";
 import PomodoroTimeDrawer from "./PomodoroTimeDrawer.vue";
 import MusicPlayer from "../MusicPlayer.vue";
 import Settings from "./Settings-Pomodoro.vue";
-import { PomodoroState } from "../../types/pomodoro-state.enum";
+import { PomodoroState } from "@/types/pomodoro-state.enum";
+import { cAutoStart, cBonus, cSound } from "@/utils/settings-const.util";
 
 // TODO: preload sound assets
 // eslint-disable-next-line
@@ -113,6 +114,14 @@ export default defineComponent({
           break;
       }
     },
+
+    pause(val) {
+      if (val) {
+        this.pomodoroButton = "Start";
+      } else {
+        this.pomodoroButton = "Stop";
+      }
+    },
   },
   mounted() {
     this.total = this.work;
@@ -120,18 +129,10 @@ export default defineComponent({
   },
   methods: {
     togglePomodoro() {
-      console.log("toggle " + this.running);
       if (this.running) {
         this.stopTimer();
       } else {
         this.startTimer(true);
-      }
-      this.toggleButton();
-    },
-    toggleButton() {
-      if (!this.running) {
-        this.pomodoroButton = "Start";
-      } else {
         this.pomodoroButton = "Stop";
       }
     },
@@ -149,12 +150,15 @@ export default defineComponent({
           this.playEndSound();
           clearInterval(this.timer);
           this.running = false;
-          this.doPomodore();
-          if (localStorage.getItem("autoStart")) {
+
+          if (!this.bonusRound()) {
+            this.doPomodore();
+          }
+
+          if (localStorage.getItem(cAutoStart) === "true") {
             clearInterval(this.timer);
+            this.pomodoroButton = "Stop";
             this.startTimer(false);
-          } else {
-            this.toggleButton();
           }
         }
       }, 1000);
@@ -233,6 +237,35 @@ export default defineComponent({
       }
     },
 
+    bonusRound() {
+      if (
+        localStorage.getItem(cBonus) === "true" &&
+        Math.floor(Math.random() * 100) + 1 < 15
+      ) {
+        // rand the next round
+        // TODO: play sound
+        const nextRoundType = Math.floor(Math.random() * 3) + 1;
+        switch (nextRoundType) {
+          case 0:
+            this.currentState = PomodoroState.WORK;
+            break;
+          case 1:
+            this.currentState = PomodoroState.SHORTBREAK;
+            break;
+          case 2:
+            this.currentState = PomodoroState.LONGBREAK;
+            break;
+          default:
+            break;
+        }
+        this.resetRound();
+        this.running = false;
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     // sound stuff
     playAudio(file: string) {
       try {
@@ -244,7 +277,7 @@ export default defineComponent({
       }
     },
     playEndSound() {
-      const sound = localStorage.getItem("sound");
+      const sound = localStorage.getItem(cSound);
       try {
         // eslint-disable-next-line
         const audio = new Audio(require(`@/assets/${sound}.wav`)); // TODO: get this from settings file

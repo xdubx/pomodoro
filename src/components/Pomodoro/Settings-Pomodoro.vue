@@ -60,6 +60,14 @@
 import { defineComponent } from "vue";
 import { settings } from "ionicons/icons";
 import { IonIcon } from "@ionic/vue";
+import {
+  cSound,
+  cColor,
+  cThemeColor,
+  cBonus,
+  cAutoStart,
+  cPauseMusic,
+} from "@/utils/settings-const.util";
 // eslint-disable-next-line
 const click = require(`@/assets/double-click.wav`);
 
@@ -86,12 +94,15 @@ export default defineComponent({
   emits: ["settingsUpdated"],
   methods: {
     save() {
-      localStorage.setItem("sound", this.endSound.toString());
-      localStorage.setItem("color", this.color.toString());
-      localStorage.setItem("themeColor", this.themeColor.toString());
-      localStorage.setItem("bonus", this.bonus.toString());
-      localStorage.setItem("autoStart", this.autoStart.toString());
-      localStorage.setItem("pauseMusic", this.pauseMusic.toString());
+      // TODO: move all settings to consts into a helper file
+      localStorage.setItem(cSound, this.endSound.toString());
+      localStorage.setItem(cColor, this.color.toString());
+      localStorage.setItem(cThemeColor, this.themeColor.toString());
+      localStorage.setItem(cBonus, this.bonus.toString());
+      localStorage.setItem(cAutoStart, this.autoStart.toString());
+      localStorage.setItem(cPauseMusic, this.pauseMusic.toString());
+
+      // TODO: add times
       // load sound
       this.open = false;
     },
@@ -101,12 +112,12 @@ export default defineComponent({
     },
 
     loadItems() {
-      const sound = localStorage.getItem("sound");
-      const color = localStorage.getItem("color");
-      const themeColor = localStorage.getItem("themeColor");
-      const bonus = localStorage.getItem("bonus");
-      const autoStart = localStorage.getItem("autoStart");
-      const pauseMusic = localStorage.getItem("pauseMusic");
+      const sound = localStorage.getItem(cSound);
+      const color = localStorage.getItem(cColor);
+      const themeColor = localStorage.getItem(cThemeColor);
+      const bonus = localStorage.getItem(cBonus);
+      const autoStart = localStorage.getItem(cAutoStart);
+      const pauseMusic = localStorage.getItem(cPauseMusic);
       if (sound && color && bonus && autoStart && themeColor) {
         this.endSound = sound;
         this.color = color;
