@@ -33,20 +33,20 @@ jobs:
       
       - run: npm ci
       - run: npm run build --if-present
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
         
       - name: Upload build artifact v4
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
+          retention-days: 1
           path: dist/
 
   deploy:
     needs: build
     permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+      contents: read
+      pages: write
+      id-token: write
 
     # Deploy to the github-pages environment
     environment:
@@ -58,4 +58,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/deploy-pages@v4
